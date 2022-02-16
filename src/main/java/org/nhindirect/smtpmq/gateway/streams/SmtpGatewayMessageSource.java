@@ -29,7 +29,7 @@ public class SmtpGatewayMessageSource
 		
 		log.info("Handing off incoming message to smtp gateway for from {} to {} with message id {}", from, 
 				toRecipsPrettingString(msg.getRecipientAddresses()), msg.getMimeMessage().getMessageID());
-		
+
 		streamBridge.send(OUT_BINDING_NAME, SMTPMailMessageConverter.toStreamMessage(msg));
 	}
 

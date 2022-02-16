@@ -11,7 +11,7 @@ RUN apk add --no-cache curl expect busybox-extras && \
 LABEL tag=smtp-mq-gateway
 
 # Build arguments
-ARG BUILD_VERSION=8.1.0-SNAPSHOT
+ARG BUILD_VERSION=8.1.1-SNAPSHOT
 
 # Create and use local user and group
 RUN addgroup -S direct && adduser -S -D direct -G direct
@@ -20,6 +20,9 @@ RUN addgroup -S direct && adduser -S -D direct -G direct
 RUN mkdir -p /opt/app
 RUN chown direct:direct /opt/app
 ENV PROJECT_HOME /opt/app
+
+ARG DEPLOY_PLATFORM=docker
+ENV DEPLOY_PLATFORM ${DEPLOY_PLATFORM}
 
 ENV CLOUD_CONFIG=true
 
@@ -34,8 +37,8 @@ ENV SMTP_MQ_GATEWAY_PORT=25
 USER direct:direct
 
 # Copy application artifact
-COPY bootstrap.properties $PROJECT_HOME/bootstrap.properties
-COPY application.properties $PROJECT_HOME/application.properties
+COPY src/main/resources/bootstrap-$DEPLOY_PLATFORM.properties $PROJECT_HOME/bootstrap.properties
+COPY src/main/resources/application-$DEPLOY_PLATFORM.properties $PROJECT_HOME/application.properties
 COPY target/direct-smtp-mq-gateway-$BUILD_VERSION.jar $PROJECT_HOME/smtp-mq-gateway.jar
 
 # Switching to the application location
