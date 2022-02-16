@@ -152,6 +152,7 @@ public class SMTPMessageHandler implements MessageHandler
 		    	messageSource.forwardSMTPMessage(mailMessage);
 
 		        log.info("successfully sent message with message id {} ({} bytes)", messageId, countingInputStream.getByteCount());
+		        recipients.clear();
 		    } 
 		    catch (Throwable e) 
 		    {
